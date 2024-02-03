@@ -7,9 +7,13 @@ import {
   fetchLatestInvoices,
   fetchCardData,
 } from '@/app/lib/data';
+import { CardSkeleton } from '@/app/ui/skeletons';
 import { lusitana } from '@/app/ui/fonts';
 
 const Dashboard = async () => {
+  // fake slow fetching
+  await new Promise((resolve) => setTimeout(resolve, 2500));
+
   const revenue = await fetchRevenue();
   const latestInvoices = await fetchLatestInvoices();
   const {
@@ -24,6 +28,7 @@ const Dashboard = async () => {
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard
       </h1>
+
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <Card title="Collected" value={totalPaidInvoices} type="collected" />
         <Card title="Pending" value={totalPendingInvoices} type="pending" />
