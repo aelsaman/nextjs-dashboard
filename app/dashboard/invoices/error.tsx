@@ -11,6 +11,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Optionally log the error to an error reporting service
+    // using error passed to page as props by NextJS
     console.error(error);
   }, [error]);
 
@@ -21,6 +22,7 @@ export default function Error({
         className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
         onClick={
           // Attempt to recover by trying to re-render the invoices route
+          // using reset prop passed to the page by NextJS framework
           () => reset()
         }
       >
