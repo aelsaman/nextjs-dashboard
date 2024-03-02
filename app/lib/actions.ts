@@ -1,4 +1,8 @@
 'use server';
+
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+
 //
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
@@ -72,13 +76,34 @@ export async function updateInvoice(id: string, formData: FormData) {
 // Server Action for deleting an invoice
 
 export async function deleteInvoice(id: string) {
-  throw new Error('Failed to Delete Invoice');
-  
+  // throw new Error('Failed to Delete Invoice');
+
   try {
     await sql`DELETE FROM invoices WHERE id = ${id}`;
     revalidatePath('/dashboard/invoices');
     return { message: 'Deleted Invoice.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice' };
+  }
+}
+
+// call backend auth.ts signIn to authenticate a user
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
   }
 }
