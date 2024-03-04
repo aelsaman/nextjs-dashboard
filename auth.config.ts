@@ -7,10 +7,12 @@ export const authConfig = {
     signIn: '/login',
   },
   providers: [],
-  // 
+  //
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      // this middleware for next-auth is not being triggered !!! 
+      console.log('isLoggedIn auth.config ====>> ', isLoggedIn);
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       if (isOnDashboard) {
         if (isLoggedIn) return true;
