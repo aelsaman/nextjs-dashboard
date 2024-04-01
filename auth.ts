@@ -22,7 +22,7 @@ async function getUser(email: string): Promise<User | undefined> {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
-  basePath: '/auth',
+  basePath: '/api/auth',
   providers: [
     Credentials({
       async authorize(credentials) {
